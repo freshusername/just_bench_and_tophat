@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Babylon Template</title>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+    <script src="https://preview.babylonjs.com/babylon.js"></script>
+    <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+</head>
+
+<body>
+    <canvas id="renderCanvas" touch-action="none"></canvas> //touch-action="none" for best results from PEP
+    <script>
+        var canvas = document.getElementById("renderCanvas"); // Get the canvas element
+        var engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+        /******* Початок функції створення сцени ******/
+        var createScene = function () {
+            // Створюємо сцену
+            var scene = new BABYLON.Scene(engine);
+            // Додаємо камери
+            var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 18, new BABYLON.Vector3(0, 0, 0), scene);
+            camera.cameraAcceleration = 0.5;
+            camera.maxCameraSpeed = 10;
+            camera.attachControl(canvas, true);
+            // Додаємо джерела світла
+            var light1 = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(-10, 10, 10), scene);
+            light1.range = 100;
+            var light2 = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(10, -10, 10), scene);
+            light2.range = 100;
+
+            var hatSkin = new BABYLON.StandardMaterial("hatSkin", scene);
+            hatSkin.diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/Playground/textures/stars.png", scene);
+            var benchSkin = new BABYLON.StandardMaterial("benchSkin", scene);
+            benchSkin.diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/Playground/textures/wood.jpg", scene);
+            var benchSkin1 = new BABYLON.StandardMaterial("benchSkin1", scene);
+            benchSkin1.diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/Playground/textures/albedo.png", scene);
+            var hatSkin1 = new BABYLON.StandardMaterial("hatSkin", scene);
+            hatSkin1.diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/Playground/textures/earth.jpg", scene);
+            var groundSkin = new BABYLON.StandardMaterial("groundSkin", scene);
+            groundSkin.diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/Playground/textures/grass.png", scene);
+
+            // Додаємо об’єкти
+            var myGround = BABYLON.MeshBuilder.CreateGround("myGround", {width: 20, height: 20, subdivisions: 4}, scene);
+            var benchSit = BABYLON.MeshBuilder.CreateBox("benchSit", { height: 0.3, width: 3, depth: 10 }, scene);
+            var benchBack1 = BABYLON.MeshBuilder.CreateBox("benchBack1", { height: 0.2, width: 1.0, depth: 10 }, scene);
+            var benchBack2 = BABYLON.MeshBuilder.CreateBox("benchBack2", { height: 0.2, width: 1.0, depth: 10 }, scene);
+            var benchStand1 = BABYLON.MeshBuilder.CreateBox("benchStand1", { height: 4.1, width: 0.5, depth: 0.5 }, scene);
+            var benchStand2 = BABYLON.MeshBuilder.CreateBox("benchStand2", { height: 4.1, width: 0.5, depth: 0.5 }, scene);
+            var benchStand3 = BABYLON.MeshBuilder.CreateBox("benchStand2", { height: 1.5, width: 0.5, depth: 0.5 }, scene);
+            var benchStand4 = BABYLON.MeshBuilder.CreateBox("benchStand2", { height: 1.5, width: 0.5, depth: 0.5 }, scene);
+            var benchStand11 = BABYLON.MeshBuilder.CreateBox("benchStand2", { height: 1.5, width: 0.5, depth: 0.5 }, scene);
+            var benchStand22 = BABYLON.MeshBuilder.CreateBox("benchStand2", { height: 1.5, width: 0.5, depth: 0.5 }, scene);
+
+            var coneMain = BABYLON.MeshBuilder.CreateCylinder("coneMain", { diameter: 1.5, height: 1.7, tessellation: 0 }, scene);
+            var coneBottom = BABYLON.MeshBuilder.CreateCylinder("coneBottom", { diameter: 2.2, height: 0.08, tessellation: 0 }, scene);
+            coneMain.setPositionWithLocalVector(new BABYLON.Vector3(0, 1.0, 0));
+            coneBottom.setPositionWithLocalVector(new BABYLON.Vector3(0, 0.2, 0));
+
+            myGround.setPositionWithLocalVector(new BABYLON.Vector3(0, -1.35, 0));
+            // cone.material = mat;
+            benchBack1.rotation.z = 1.2;
+            benchBack1.setPositionWithLocalVector(new BABYLON.Vector3(2.9, -1.1, 0));
+            benchBack2.rotation.z = 1.2;
+            benchBack2.setPositionWithLocalVector(new BABYLON.Vector3(1.5, -1.1, 0));
+            //benchStand1.rotation.y = 0;
+            benchStand2.rotation.y = 0;
+            benchStand1.setPositionWithLocalVector(new BABYLON.Vector3(1.725, 0.65, 4));
+            benchStand2.setPositionWithLocalVector(new BABYLON.Vector3(1.725, 0.65, -4));
+            benchStand11.setPositionWithLocalVector(new BABYLON.Vector3(0.95, -0.65, -4));
+            benchStand22.setPositionWithLocalVector(new BABYLON.Vector3(0.95, -0.65, 4));
+            benchStand3.setPositionWithLocalVector(new BABYLON.Vector3(-1.1, -0.65, 4));
+            benchStand4.setPositionWithLocalVector(new BABYLON.Vector3(-1.1, -0.65, -4));
+            benchStand1.rotation.z = -Math.PI / 8;
+            benchStand2.rotation.z = -Math.PI / 8;
+
+            myGround.material = groundSkin;
+            coneMain.material = hatSkin;
+            coneBottom.material = hatSkin1;
+            benchBack1.material = benchBack2.material = benchSit.material = benchSkin;
+            benchStand11.material = benchStand1.material = benchStand2.material = benchStand3.material = benchStand4.material = benchStand22.material = benchSkin1;
+
+
+            // Виконуємо трансформацію
+            // myBox.translate(BABYLON.Axis.Y, -1, BABYLON.Space.WORLD);
+            // myBox.translate(BABYLON.Axis.X, -2, BABYLON.Space.WORLD);
+            // myBox.translate(BABYLON.Axis.Z, 2, BABYLON.Space.WORLD);
+            // myBox.rotate(BABYLON.Axis.Y, Math.PI / 4, BABYLON.Space.WORLD);
+            return scene;
+        };
+        /******* Завершення функції сцени ******/
+        var scene = createScene(); //Отримуємо сцену
+        // Регіструємо рендерер
+        engine.runRenderLoop(function () {
+            scene.render();
+        });
+        // Підписуємося на зміну розміру вікна
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+</body>
+
+</html>
