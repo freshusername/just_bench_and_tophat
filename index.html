@@ -19,6 +19,11 @@
             height: 100%;
             touch-action: none;
         }
+
+        #buttonsCanvas {
+            width: 75%;
+            height: 55%;
+        }
     </style>
     <script src="https://preview.babylonjs.com/babylon.js"></script>
     <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
@@ -26,19 +31,32 @@
 </head>
 
 <body>
-    <canvas id="renderCanvas" touch-action="none"></canvas> //touch-action="none" for best results from PEP
+    <div id="navig">
+        <canvas id="renderCanvas" touch-action="none"></canvas>
+        <button id="scaleX">scale on X axis *2</button>
+        <button id="scaleY">scale on Y axis *2</button>
+        <button id="translateX">translate on X axis for 2 points</button>
+        <button id="translateY">translate on Y axis for 2 points</button>
+        <button id="rotateX">rotate on X axis for 30*</button>
+        <button id="rotateY">rotate on Y axis for 30*</button>
+        <button id="reset">RESET POSITION</button>
+    </div>
     <script>
         var canvas = document.getElementById("renderCanvas"); // Get the canvas element
         var engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+
         /******* Початок функції створення сцени ******/
         var createScene = function () {
+
             // Створюємо сцену
             var scene = new BABYLON.Scene(engine);
+
             // Додаємо камери
             var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 18, new BABYLON.Vector3(0, 0, 0), scene);
             camera.cameraAcceleration = 0.5;
             camera.maxCameraSpeed = 10;
             camera.attachControl(canvas, true);
+
             // Додаємо джерела світла
             var light1 = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(-10, 10, 10), scene);
             light1.range = 100;
@@ -57,29 +75,87 @@
             groundSkin.diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/Playground/textures/grass.png", scene);
 
             // Додаємо об’єкти
-            var myGround = BABYLON.MeshBuilder.CreateGround("myGround", {width: 20, height: 20, subdivisions: 4}, scene);
-            var benchSit = BABYLON.MeshBuilder.CreateBox("benchSit", { height: 0.3, width: 3, depth: 10 }, scene);
-            var benchBack1 = BABYLON.MeshBuilder.CreateBox("benchBack1", { height: 0.2, width: 1.0, depth: 10 }, scene);
-            var benchBack2 = BABYLON.MeshBuilder.CreateBox("benchBack2", { height: 0.2, width: 1.0, depth: 10 }, scene);
-            var benchStand1 = BABYLON.MeshBuilder.CreateBox("benchStand1", { height: 4.1, width: 0.5, depth: 0.5 }, scene);
-            var benchStand2 = BABYLON.MeshBuilder.CreateBox("benchStand2", { height: 4.1, width: 0.5, depth: 0.5 }, scene);
-            var benchStand3 = BABYLON.MeshBuilder.CreateBox("benchStand2", { height: 1.5, width: 0.5, depth: 0.5 }, scene);
-            var benchStand4 = BABYLON.MeshBuilder.CreateBox("benchStand2", { height: 1.5, width: 0.5, depth: 0.5 }, scene);
-            var benchStand11 = BABYLON.MeshBuilder.CreateBox("benchStand2", { height: 1.5, width: 0.5, depth: 0.5 }, scene);
-            var benchStand22 = BABYLON.MeshBuilder.CreateBox("benchStand2", { height: 1.5, width: 0.5, depth: 0.5 }, scene);
+            var myGround = BABYLON.MeshBuilder.CreateGround("myGround", {
+                width: 20,
+                height: 20,
+                subdivisions: 4
+            }, scene);
+            var benchSit = BABYLON.MeshBuilder.CreateBox("benchSit", {
+                height: 0.3,
+                width: 3,
+                depth: 10
+            }, scene);
+            var benchBack1 = BABYLON.MeshBuilder.CreateBox("benchBack1", {
+                height: 0.2,
+                width: 1.0,
+                depth: 10
+            }, scene);
+            var benchBack2 = BABYLON.MeshBuilder.CreateBox("benchBack2", {
+                height: 0.2,
+                width: 1.0,
+                depth: 10
+            }, scene);
+            var benchStand1 = BABYLON.MeshBuilder.CreateBox("benchStand1", {
+                height: 4.1,
+                width: 0.5,
+                depth: 0.5
+            }, scene);
+            var benchStand2 = BABYLON.MeshBuilder.CreateBox("benchStand2", {
+                height: 4.1,
+                width: 0.5,
+                depth: 0.5
+            }, scene);
+            var benchStand3 = BABYLON.MeshBuilder.CreateBox("benchStand2", {
+                height: 1.5,
+                width: 0.5,
+                depth: 0.5
+            }, scene);
+            var benchStand4 = BABYLON.MeshBuilder.CreateBox("benchStand2", {
+                height: 1.5,
+                width: 0.5,
+                depth: 0.5
+            }, scene);
+            var benchStand11 = BABYLON.MeshBuilder.CreateBox("benchStand2", {
+                height: 1.5,
+                width: 0.5,
+                depth: 0.5
+            }, scene);
+            var benchStand22 = BABYLON.MeshBuilder.CreateBox("benchStand2", {
+                height: 1.5,
+                width: 0.5,
+                depth: 0.5
+            }, scene);
 
-            var coneMain = BABYLON.MeshBuilder.CreateCylinder("coneMain", { diameter: 1.5, height: 1.7, tessellation: 0 }, scene);
-            var coneBottom = BABYLON.MeshBuilder.CreateCylinder("coneBottom", { diameter: 2.2, height: 0.08, tessellation: 0 }, scene);
+            var coneMain = BABYLON.MeshBuilder.CreateCylinder("coneMain", {
+                diameter: 1.5,
+                height: 1.7,
+                tessellation: 0
+            }, scene);
+            var coneBottom = BABYLON.MeshBuilder.CreateCylinder("coneBottom", {
+                diameter: 2.2,
+                height: 0.08,
+                tessellation: 0
+            }, scene);
+            var lighterStand = BABYLON.MeshBuilder.CreateBox("lighterStand", {
+                height: 10,
+                width: 0.5,
+                depth: 0.5
+            }, scene);
+            var lighterMain = BABYLON.MeshBuilder.CreateBox("lighterMain", {
+                height: 0.5,
+                width: 1.75,
+                depth: 0.5
+            }, scene);
+            var lighterBulb = BABYLON.MeshBuilder.CreateSphere("lighterBulb", { diameter: 0.5}, scene);
+
+
             coneMain.setPositionWithLocalVector(new BABYLON.Vector3(0, 1.0, 0));
             coneBottom.setPositionWithLocalVector(new BABYLON.Vector3(0, 0.2, 0));
-
             myGround.setPositionWithLocalVector(new BABYLON.Vector3(0, -1.35, 0));
-            // cone.material = mat;
             benchBack1.rotation.z = 1.2;
             benchBack1.setPositionWithLocalVector(new BABYLON.Vector3(2.9, -1.1, 0));
             benchBack2.rotation.z = 1.2;
             benchBack2.setPositionWithLocalVector(new BABYLON.Vector3(1.5, -1.1, 0));
-            //benchStand1.rotation.y = 0;
             benchStand2.rotation.y = 0;
             benchStand1.setPositionWithLocalVector(new BABYLON.Vector3(1.725, 0.65, 4));
             benchStand2.setPositionWithLocalVector(new BABYLON.Vector3(1.725, 0.65, -4));
@@ -89,27 +165,55 @@
             benchStand4.setPositionWithLocalVector(new BABYLON.Vector3(-1.1, -0.65, -4));
             benchStand1.rotation.z = -Math.PI / 8;
             benchStand2.rotation.z = -Math.PI / 8;
+            lighterStand.setPositionWithLocalVector(new BABYLON.Vector3(3, 3.65, 7));
+            lighterMain.setPositionWithLocalVector(new BABYLON.Vector3(2.5, 9, 7));
+            lighterMain.rotation.z = -Math.PI / 8;
+            lighterBulb.setPositionWithLocalVector(new BABYLON.Vector3(2, 9, 7));
 
+
+            lighterBulb.material = vladSkin;
             myGround.material = groundSkin;
             coneMain.material = hatSkin;
             coneBottom.material = hatSkin1;
             benchBack1.material = benchBack2.material = benchSit.material = benchSkin;
             benchStand11.material = benchStand1.material = benchStand2.material = benchStand3.material = benchStand4.material = benchStand22.material = benchSkin1;
 
+            var bench = BABYLON.Mesh.MergeMeshes([coneMain, coneBottom, benchBack1, benchBack2, benchSit, benchStand1, benchStand11, benchStand2, benchStand22, benchStand3, benchStand4], true, false, null, true, true);
 
-            // Виконуємо трансформацію
-            // myBox.translate(BABYLON.Axis.Y, -1, BABYLON.Space.WORLD);
-            // myBox.translate(BABYLON.Axis.X, -2, BABYLON.Space.WORLD);
-            // myBox.translate(BABYLON.Axis.Z, 2, BABYLON.Space.WORLD);
-            // myBox.rotate(BABYLON.Axis.Y, Math.PI / 4, BABYLON.Space.WORLD);
+
+            document.getElementById("scaleX").onclick = function () {
+                bench.scaling.x = 2;
+            }
+            document.getElementById("scaleY").onclick = function () {
+                bench.scaling.y = 2;
+            }
+            document.getElementById("translateX").onclick = function () {
+                bench.translate(BABYLON.Axis.X, 2, BABYLON.Space.WORLD);
+            }
+            document.getElementById("translateY").onclick = function () {
+                bench.translate(BABYLON.Axis.Y, 2, BABYLON.Space.WORLD);
+            }
+            document.getElementById("rotateX").onclick = function () {
+                bench.rotate(BABYLON.Axis.X, Math.PI / 6, BABYLON.Space.WORLD);
+            }
+            document.getElementById("rotateY").onclick = function () {
+                bench.rotate(BABYLON.Axis.Y, Math.PI / 6, BABYLON.Space.WORLD);
+            }
+            document.getElementById("reset").onclick = function () {
+                bench.setPositionWithLocalVector(new BABYLON.Vector3(0, 0, 0));
+                bench.rotation = new BABYLON.Vector3(0, 0, 0);
+                bench.scaling = new BABYLON.Vector3(1, 1, 1);
+            }
+
             return scene;
         };
-        /******* Завершення функції сцени ******/
+
         var scene = createScene(); //Отримуємо сцену
-        // Регіструємо рендерер
+
         engine.runRenderLoop(function () {
             scene.render();
         });
+
         // Підписуємося на зміну розміру вікна
         window.addEventListener("resize", function () {
             engine.resize();
