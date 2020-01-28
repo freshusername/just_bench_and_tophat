@@ -55,6 +55,7 @@
             var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 18, new BABYLON.Vector3(0, 0, 0), scene);
             camera.cameraAcceleration = 0.5;
             camera.maxCameraSpeed = 10;
+            camera.wheelPrecision = 50;
             camera.attachControl(canvas, true);
 
             // Додаємо джерела світла
@@ -62,6 +63,21 @@
             light1.range = 100;
             var light2 = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(10, -10, 10), scene);
             light2.range = 100;
+            var light3 = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(10, 10, -10), scene);
+            light3.range = 50;
+
+            // var skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 1000.0 }, scene);
+            // var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+            // skyboxMaterial.backFaceCulling = false;
+            // skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("textures/skybox", scene);
+            // skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+            // skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+            // skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+            // skybox.material = skyboxMaterial;
+
+           // var hdrTexture = new BABYLON.CubeTexture.CreateFromPrefilteredData("P:/course 3/3D-графіка/babylonJS/environment.dds", scene);
+            // scene.imageProcessingConfiguration.exposure = 0.6;
+            // scene.imageProcessingConfiguration.contrast = 1.6;
 
             var hatSkin = new BABYLON.StandardMaterial("hatSkin", scene);
             hatSkin.diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/Playground/textures/stars.png", scene);
@@ -73,6 +89,29 @@
             hatSkin1.diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/Playground/textures/earth.jpg", scene);
             var groundSkin = new BABYLON.StandardMaterial("groundSkin", scene);
             groundSkin.diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/Playground/textures/grass.png", scene);
+
+            var metalSkin = new BABYLON.StandardMaterial("metalSkin", scene);
+            metalSkin.diffuseTexture = new BABYLON.Texture("https://speedmetals.com/wp-content/uploads/2017/02/SpeedMetals-MetalTexture-Feb17-768x512.jpg", scene);
+
+            var vladSkin = new BABYLON.StandardMaterial("vladSkin", scene);
+            vladSkin.diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/freshusername/just_bench_and_tophat/master/vlad_texture.jpg", scene)
+
+            // var glass = new BABYLON.PBRMaterial("glass", scene);
+            // glass.reflectionTexture = hdrTexture;
+            // glass.refractionTexture = hdrTexture;
+            // glass.linkRefractionWithTransparency = true;
+            // glass.indexOfRefraction = 0.52;
+            // glass.alpha = 0;
+            // glass.microSurface = 1;
+            // glass.reflectivityColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+            // glass.albedoColor = new BABYLON.Color3(0.85, 0.85, 0.85);
+            // lighterBulb.material = glass;
+
+            // var glass = new BABYLON.PBRMaterial("glass", scene);
+            // glass.linkRefractionWithTransparency = true;
+            // glass.indexOfRefraction = 0.52;
+            // glass.alpha = 1; // Fully refractive material
+
 
             // Додаємо об’єкти
             var myGround = BABYLON.MeshBuilder.CreateGround("myGround", {
@@ -146,7 +185,7 @@
                 width: 1.75,
                 depth: 0.5
             }, scene);
-            var lighterBulb = BABYLON.MeshBuilder.CreateSphere("lighterBulb", { diameter: 0.5}, scene);
+            var lighterBulb = BABYLON.MeshBuilder.CreateSphere("lighterBulb", { diameter: 0.5 }, scene);
 
 
             coneMain.setPositionWithLocalVector(new BABYLON.Vector3(0, 1.0, 0));
@@ -166,13 +205,21 @@
             benchStand1.rotation.z = -Math.PI / 8;
             benchStand2.rotation.z = -Math.PI / 8;
             lighterStand.setPositionWithLocalVector(new BABYLON.Vector3(3, 3.65, 7));
+
+            lighterMain.environmentTexture = new BABYLON.CubeTexture.CreateFromPrefilteredData("P:/course 3/3D-графіка/babylonJS/environment.dds", scene);
             lighterMain.setPositionWithLocalVector(new BABYLON.Vector3(2.5, 9, 7));
             lighterMain.rotation.z = -Math.PI / 8;
+
             lighterBulb.setPositionWithLocalVector(new BABYLON.Vector3(2, 9, 7));
 
+            var metal = new BABYLON.PBRMetallicRoughnessMaterial("metal", scene);
+            metal.metallic = 1.0;
+            metal.roughness = 0.1;
+            lighterMain.material = metalSkin;
 
-            lighterBulb.material = vladSkin;
-            myGround.material = groundSkin;
+            lighterBulb.material = glass;
+
+            myGround.material = vladSkin;
             coneMain.material = hatSkin;
             coneBottom.material = hatSkin1;
             benchBack1.material = benchBack2.material = benchSit.material = benchSkin;
